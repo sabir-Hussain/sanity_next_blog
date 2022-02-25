@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import imageUrlBuilder from "@sanity/image-url";
-import { sanityClient } from "../sanityClient";
-import Image from "next/image";
+// import imageUrlBuilder from "@sanity/image-url";
+// import { sanityClient } from "../sanityClient";
 
 import PostCard from "../components/PostCard"
 
@@ -11,16 +10,16 @@ const Blog = ({ posts }) => {
   useEffect(() => {
     if (posts.length) {
 
-      const imageBuilder = imageUrlBuilder(sanityClient);
+      // const imageBuilder = imageUrlBuilder(sanityClient);
 
       setMappedPosts(
         posts.map((post) => {
           return {
             ...post,
-            mainImage: imageBuilder
-              .image(post.mainImage)
-              .width(450)
-              .height(500),
+            // mainImage: imageBuilder
+            //   .image(post.mainImage)
+            //   .width(450)
+            //   .height(500),
           };
         })
       );
@@ -49,7 +48,7 @@ export const getServerSideProps = async (context) => {
   const query = encodeURIComponent(`*[ _type == "post" ]`);
   const url = `${process.env.SANITY_URL}query=${query}`;
 
-  console.log(url);
+  // console.log(url);
 
   const data = await fetch(url).then((res) => res.json());
   const posts = data.result;

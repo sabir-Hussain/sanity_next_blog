@@ -46,7 +46,7 @@ const BlogPost = (props) => {
 export const getServerSideProps = async (context) => {
 
   const pageSlug = context.query.slug;
-  console.log(pageSlug);
+  // console.log(pageSlug);
 
   if (!pageSlug) {
     return {
