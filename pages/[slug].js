@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
-
-import imageUrlBuilder from "@sanity/image-url";
+// import imageUrlBuilder from "@sanity/image-url";
 import BlockContent from "@sanity/block-content-to-react";
-
+import { useNextSanityImage } from "next-sanity-image";
 import Link from "next/link";
 import Image from "next/image";
-
 import { sanityClient } from "../sanityClient";
 
 const BlogPost = (props) => {
-
   const { title, body, image } = props;
+  // const [imageUrl, setImageUrl] = useState("");
 
-  const [imageUrl, setImageUrl] = useState("");
-  
-  useEffect(() => {
-    const imageBuilder = imageUrlBuilder(sanityClient);
-    setImageUrl(imageBuilder.image(image));
-  }, [image]);
+  const imageProps = useNextSanityImage(sanityClient, image);
+
+  // useEffect(() => {
+  //   const imageBuilder = imageUrlBuilder(sanityClient);
+  //   setImageUrl(imageBuilder.image(image));
+  // }, [image]);
 
   return (
     <div className="container py-5">
@@ -34,9 +32,8 @@ const BlogPost = (props) => {
 
       <div className="post-content-wrap">
         <h1>{title}</h1>
-        {imageUrl && 
-        <img className="img-fluid" src={imageUrl} />}
-        
+        {imageProps &&  <Image {...imageProps} layout="intrinsic" alt="" />}
+
         <BlockContent blocks={body} />
       </div>
     </div>
@@ -44,7 +41,6 @@ const BlogPost = (props) => {
 };
 
 export const getServerSideProps = async (context) => {
-
   const pageSlug = context.query.slug;
   // console.log(pageSlug);
 
@@ -61,7 +57,7 @@ export const getServerSideProps = async (context) => {
 
   const data = await fetch(url).then((res) => res.json());
   const post = data.result[0];
-//   console.log(post);
+  //   console.log(post);
 
   if (!post) {
     return {
